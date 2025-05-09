@@ -9,7 +9,7 @@ source venv/bin/activate
 
 # 1) start SD.Next WebUI in API‑only mode (no UI)
 echo "==== Starting SD.Next WebUI (API only) ===="
-bash webui.sh --api --listen --port 7860 &
+bash webui.sh --api --listen --port 7860 --debug --skip-all --quick --api-log --log sdnext.log &
 WEBUI_PID=$!
 
 # 2) wait for the /sdapi/v1/txt2img endpoint
