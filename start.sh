@@ -4,6 +4,13 @@
 # ----------------------------------------------------------------------
 set -e
 
+# Активация виртуальной среды
+source venv/bin/activate
+
+# Проверка наличия модуля runpod
+echo "==== Проверка необходимых модулей ===="
+pip --no-cache-dir install runpod fastapi uvicorn boto3 mediapipe opencv-contrib-python-headless
+
 # 1) start SD.Next WebUI in API‑only mode (no UI)
 echo "==== Starting SD.Next WebUI (API only) ===="
 bash webui.sh --api --listen --port 7860 &
@@ -22,6 +29,7 @@ done
 
 # 3) launch your RunPod / FastAPI handler
 echo "==== Starting function_handler.py ===="
+# Запускаем с активированной виртуальной средой
 python function_handler.py &
 HANDLER_PID=$!
 
