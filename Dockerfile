@@ -66,7 +66,27 @@ RUN python3 -m venv venv \
     pillow \
     boto3 \
     fastapi \
-    uvicorn
+    uvicorn \
+    onnxruntime-gpu \
+    basicsr \
+    facexlib \
+    gfpgan \
+    realesrgan \
+    open_clip_torch \
+    clip \
+    xformers \
+    nncf==2.16.0 \
+    optimum-quanto==0.2.7 \
+    torchao==0.10.0 \
+    pillow-jxl-plugin==1.3.2 \
+    clean-fid \
+    bitsandbytes==0.45.5 \
+    pynvml \
+    ultralytics==8.3.40 \
+    Cython \
+    albumentations==1.4.3 \
+    gguf \
+    av
 
 # Предустановка всех модулей SD.Next и расширений
 RUN . venv/bin/activate && \
