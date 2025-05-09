@@ -21,9 +21,9 @@ RUN git submodule update --init --recursive
 
 # Переменные для пропуска проверок и установки при запуске
 # ENV SD_NOHASHING=true
-ENV SD_SKIP_REQUIREMENTS=true
-ENV SD_SKIP_SUBMODULES=true
-ENV SD_DISABLE_UPDATE=true
+# ENV SD_SKIP_REQUIREMENTS=true
+# ENV SD_SKIP_SUBMODULES=true
+# ENV SD_DISABLE_UPDATE=true
 # ENV SD_SKIP_EXTENSIONS=true
 # ENV SD_QUICK_START=true
 
