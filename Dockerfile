@@ -45,8 +45,9 @@ RUN python3 -m venv venv \
 
 # Предустановка всех модулей SD.Next и расширений
 RUN . venv/bin/activate && \
-    python launch.py --debug --test --uv --use-cuda --optional --install-only && \
-    python launch.py --debug --test --install-extension-requirements
+    python launch.py --debug --test --uv --use-cuda --optional --log "sdnext.log" --requirements --reinstall && \
+    # Установка зависимостей расширений
+    python -m pip install greenlet sqlalchemy PyMatting pooch rembg
 
 # copy your custom handler and the new entrypoint script
 COPY function_handler.py /app/function_handler.py
