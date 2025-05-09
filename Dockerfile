@@ -43,20 +43,13 @@ ENV SD_DOCKER=true
 ENV LD_PRELOAD=libtcmalloc_minimal.so.4  
 
 # ──────────────────────────────────────────────────────────────────────────
-# прочитает ТОЛЬКО configs/Dockerfile.cuda,
-# и выполнит их прямо внутри этого образа.
-
-RUN ["/usr/sbin/ldconfig"]
-RUN ["python", "/app/launch.py", "--debug", "--uv", "--use-cuda", "--log", "sdnext.log", "--test", "--optional"]
-
+# СНАЧАЛА настраиваем venv и ставим ВСЕ Python пакеты
 # ──────────────────────────────────────────────────────────────────────────
 
-# Теперь ваш уже существующий venv / pip / launch.py и т.п.
 # create & activate venv, install Python deps
 RUN python3 -m venv venv \
     && . venv/bin/activate \
     && pip install --upgrade pip \
-    && pip install --no-cache-dir pydantic==1.10.21 \
     && pip install --no-cache-dir -r requirements.txt \
     && pip install --no-cache-dir \
     runpod \
@@ -86,11 +79,16 @@ RUN python3 -m venv venv \
     Cython \
     albumentations==1.4.3 \
     gguf \
-    av
+    av \
+    greenlet sqlalchemy PyMatting pooch rembg \
+    && pip install --no-cache-dir pydantic==1.10.21
 
-# Предустановка всех модулей SD.Next и расширений
+# ──────────────────────────────────────────────────────────────────────────
+# ТЕПЕРЬ, когда все пакеты Python установлены,
+# запускаем launch.py для предварительной проверки и настройки
+# ──────────────────────────────────────────────────────────────────────────
 RUN . venv/bin/activate && \
-    python -m pip install greenlet sqlalchemy PyMatting pooch rembg
+    python /app/launch.py --debug --uv --use-cuda --log sdnext.log --test --optional
 
 # Предварительная загрузка моделей MediaPipe, чтобы избежать их загрузок в рантайме
 RUN . venv/bin/activate && \
