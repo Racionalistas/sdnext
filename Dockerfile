@@ -16,11 +16,37 @@ RUN apt-get update && \
 # clone SD.Next
 RUN git clone https://github.com/vladmandic/sdnext.git .
 
+# Инициализация submodules
+RUN git submodule update --init --recursive
+
+# Переменные для пропуска проверок и установки при запуске
+ENV SD_NOHASHING=true
+ENV SD_SKIP_REQUIREMENTS=true
+ENV SD_SKIP_SUBMODULES=true
+ENV SD_DISABLE_UPDATE=true
+ENV SD_SKIP_EXTENSIONS=true
+ENV SD_QUICK_START=true
+
 # create & activate venv, install Python deps
 RUN python3 -m venv venv \
     && . venv/bin/activate \
     && pip install --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt
+    && pip install --no-cache-dir -r requirements.txt \
+    # Установка дополнительных модулей для function_handler.py
+    && pip install --no-cache-dir \
+       runpod \
+       opencv-python-headless \
+       mediapipe \
+       numpy \
+       pillow \
+       boto3 \
+       fastapi \
+       uvicorn
+
+# Предустановка всех модулей SD.Next и расширений
+RUN . venv/bin/activate && \
+    python launch.py --debug --test --uv --use-cuda --optional --install-only && \
+    python launch.py --debug --test --install-extension-requirements
 
 # copy your custom handler and the new entrypoint script
 COPY function_handler.py /app/function_handler.py
