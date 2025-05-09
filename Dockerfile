@@ -20,19 +20,22 @@ RUN git clone https://github.com/vladmandic/sdnext.git .
 RUN git submodule update --init --recursive
 
 # Переменные для пропуска проверок и установки при запуске
-ENV SD_NOHASHING=true
+# ENV SD_NOHASHING=true
 ENV SD_SKIP_REQUIREMENTS=true
 ENV SD_SKIP_SUBMODULES=true
 ENV SD_DISABLE_UPDATE=true
-ENV SD_SKIP_EXTENSIONS=true
-ENV SD_QUICK_START=true
+# ENV SD_SKIP_EXTENSIONS=true
+# ENV SD_QUICK_START=true
 
 # create & activate venv, install Python deps
 RUN python3 -m venv venv \
     && . venv/bin/activate \
     && pip install --upgrade pip \
+    # Сначала устанавливаем фиксированную версию pydantic
+    && pip install --no-cache-dir pydantic==1.10.21 \
+    # Устанавливаем основные зависимости
     && pip install --no-cache-dir -r requirements.txt \
-    # Установка дополнительных модулей для function_handler.py
+    # Затем устанавливаем дополнительные модули для function_handler.py
     && pip install --no-cache-dir \
        runpod \
        opencv-python-headless \
