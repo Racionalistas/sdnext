@@ -20,7 +20,6 @@ RUN git clone https://github.com/vladmandic/sdnext.git .
 RUN git submodule update --init --recursive
 
 # Переменные для пропуска проверок и установки при запуске
-# ENV SD_NOHASHING=true
 # ENV SD_SKIP_REQUIREMENTS=true
 # ENV SD_SKIP_SUBMODULES=true
 # ENV SD_DISABLE_UPDATE=true
