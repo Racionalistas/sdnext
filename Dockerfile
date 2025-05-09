@@ -10,7 +10,8 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     git wget curl libgl1-mesa-glx libglib2.0-0 \
-    python3-venv python3-dev build-essential cmake ninja-build && \
+    python3-venv python3-dev build-essential cmake ninja-build \
+    google-perftools && \
     rm -rf /var/lib/apt/lists/*
 
 # clone SD.Next (включая папку configs/)
@@ -49,11 +50,17 @@ RUN set -eux; \
     DF_TARGET="configs/Dockerfile.cuda"; \
     if [ -f "$DF_TARGET" ]; then \
       echo "→ Applying RUN steps from $DF_TARGET"; \
-      # для каждой строки, начинающейся на RUN, убираем префикс и исполняем
-      awk '/^RUN /{ sub(/^RUN[ ]*/,""); print }' "$DF_TARGET" \
+      # Обрабатываем строки, начинающиеся на RUN
+      # Удаляем префикс "RUN " или "RUN["
+      # Для exec-формы ["cmd", "arg1", "arg2"] преобразуем в "cmd arg1 arg2"
+      # Это упрощенное преобразование и может не работать для всех сложных случаев кавычек внутри аргументов
+      awk '$0 ~ "^RUN " { sub("^RUN[ ]*",""); if ($0 ~ "^\\[.*\\]$") { gsub("\",\"", " "); gsub("[\"\\[\\]]", ""); } print; }' "$DF_TARGET" \
       | while IFS= read -r cmd; do \
-        echo "+ $cmd"; \
-        bash -eux -c "$cmd"; \
+        if [ -n "$cmd" ]; then \
+          echo "+ $cmd"; \
+          # Выполняем команду. LD_PRELOAD уже должен быть активен для этого subshell, если google-perftools установлен
+          bash -eux -c "$cmd"; \
+        fi; \
       done; \
     else \
       echo "→ WARNING: $DF_TARGET not found. Skipping application of its RUN steps."; \
