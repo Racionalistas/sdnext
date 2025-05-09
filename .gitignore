@@ -44,7 +44,8 @@ tunableop_results*.csv
 !webui.sh
 !package.json
 !requirements.txt
-
+!Dockerfile
+!start.sh
 # pyinstaller
 *.spec
 build/

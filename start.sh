@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# ----------------------------------------------------------------------
+# wait_for_webui.sh (at /app/wait_for_webui.sh)
+# ----------------------------------------------------------------------
+set -e
+
+# 1) start SD.Next WebUI in API‑only mode (no UI)
+echo "==== Starting SD.Next WebUI (API only) ===="
+bash webui.sh --api --listen --port 7860 &
+WEBUI_PID=$!
+
+# 2) wait for the /sdapi/v1/txt2img endpoint
+echo "==== Waiting for WebUI API to become available ===="
+for i in {1..60}; do
+  if curl -s http://127.0.0.1:7860/sdapi/v1/txt2img > /dev/null; then
+    echo "→ WebUI API is ready (after $i checks)."
+    break
+  fi
+  printf "→ still waiting… (%d/60)\r" "$i"
+  sleep 2
+done
+
+# 3) launch your RunPod / FastAPI handler
+echo "==== Starting function_handler.py ===="
+python function_handler.py &
+HANDLER_PID=$!
+
+# 4) clean up both processes on exit
+cleanup() {
+  echo "==== Stopping processes ===="
+  kill "$HANDLER_PID" "$WEBUI_PID" 2>/dev/null || true
+  exit 0
+}
+trap cleanup SIGINT SIGTERM EXIT
+
+# 5) wait on your handler (so container stays alive)
+wait "$HANDLER_PID"
