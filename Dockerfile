@@ -24,8 +24,8 @@ RUN python3 -m venv venv \
 
 # copy your custom handler and the new entrypoint script
 COPY function_handler.py /app/function_handler.py
-COPY wait_for_webui.sh   /app/wait_for_webui.sh
-RUN chmod +x /app/wait_for_webui.sh
+COPY start.sh   /app/start.sh
+RUN chmod +x /app/start.sh
 
 EXPOSE 7860
 
