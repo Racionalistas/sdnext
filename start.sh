@@ -16,13 +16,15 @@ bash webui.sh --api --listen --port 7860 --debug --use-cuda --models-dir "/mnt/m
 WEBUI_PID=$!
 
 # 2) wait for the /sdapi/v1/txt2img endpoint
-echo "==== Waiting for WebUI API to become available ===="
+echo "==== Waiting for WebUI API and models to become available ===="
 for i in {1..60}; do
-  status=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:7860/sdapi/v1/models)
-  if [ "$status" -eq 200 ]; then
-    echo "→ WebUI API is ready (after $i checks)."
+  # -f: fail on HTTP>=400, т.е. curl вернёт exit≠0 пока endpoint не вернёт 200
+  if curl -sf http://127.0.0.1:7860/sdapi/v1/sd-models \
+       | jq 'length > 0' --exit-status; then
+    echo "...ready"
     break
   fi
+  printf "→ still waiting… (%d/60)\r" "$i"
   sleep 2
 done
 curl -s http://127.0.0.1:7860/controlnet/detect 2>/dev/null || echo "API endpoint not available"

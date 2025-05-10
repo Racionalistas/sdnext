@@ -9,7 +9,7 @@ WORKDIR /app
 # install system deps and python venv support
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    git wget curl libgl1-mesa-glx libglib2.0-0 \
+    git wget curl libgl1-mesa-glx libglib2.0-0 jq \
     python3-venv python3-dev build-essential cmake ninja-build \
     google-perftools ffmpeg && \
     rm -rf /var/lib/apt/lists/*
