@@ -40,8 +40,17 @@ ENV SD_MODELSDIR="/mnt/models"
 ENV SD_DOCKER=true
 
 # tcmalloc is not required but it is highly recommended
-ENV LD_PRELOAD=libtcmalloc_minimal.so.4  
+ENV LD_PRELOAD=libtcmalloc_minimal.so.4
 
+# ──────────────────────────────────────────────────────────────────────────
+# Скачиваем Photon-v1 (веса) в правильную папку моделей
+# ──────────────────────────────────────────────────────────────────────────
+RUN mkdir -p /mnt/models/Stable-diffusion && \
+    wget -q -O /mnt/models/Stable-diffusion/photon_v1.safetensors \
+    https://civitai.com/api/download/models/90072?type=Model&format=SafeTensor&size=pruned&fp=fp16
+
+RUN wget -q -O /mnt/models/Stable-diffusion/photon_v1.yaml \
+    https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5/resolve/main/v1-inference.yaml
 # ──────────────────────────────────────────────────────────────────────────
 # СНАЧАЛА настраиваем venv и ставим ВСЕ Python пакеты
 # ──────────────────────────────────────────────────────────────────────────
