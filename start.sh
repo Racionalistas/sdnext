@@ -11,8 +11,8 @@ source venv/bin/activate
 # 1) стартуем SD.Next WebUI в API‑only режиме
 echo "==== Starting SD.Next WebUI (API only) ===="
 bash webui.sh \
-  --api --listen --port 7860 --debug --use-cuda --models-dir "/mnt/models" \
-  --ckpt "/mnt/models/Stable-diffusion/photon_v1.safetensors" \
+  --api --listen --port 7860 --xformers --debug --use-cuda --models-dir "/mnt/models --skip-version-check --skip-torch-cuda-test --skip-python-version-check" \
+  --ckpt "/mnt/models/Stable-diffusion/photon_v1.safetensors --disable-console-progressbars --no-download-sd-model --disable-safe-unpickle" \
   --api-log --log sdnext.log --quick --skip-all &
 WEBUI_PID=$!
 
