@@ -51,8 +51,10 @@ RUN mkdir -p /mnt/models/Stable-diffusion && \
     wget -q -O /mnt/models/Stable-diffusion/photon_v1.yaml \
     https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-inference.yaml
 
-RUN git clone --depth=1 https://huggingface.co/sam749/Photon-v1 \
-    /mnt/models/Photon-v1
+RUN mkdir -p /mnt/models/Diffusers \
+    && git clone \
+    https://huggingface.co/sam749/Photon-v1 \
+    /mnt/models/Diffusers/Photon-v1
 # ──────────────────────────────────────────────────────────────────────────
 # СНАЧАЛА настраиваем venv и ставим ВСЕ Python пакеты
 # ──────────────────────────────────────────────────────────────────────────
