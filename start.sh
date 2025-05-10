@@ -9,7 +9,12 @@ source venv/bin/activate
 
 # 1) start SD.Next WebUI in API‑only mode (no UI)
 echo "==== Starting SD.Next WebUI (API only) ===="
-bash webui.sh --api --listen --port 7860 --debug --use-cuda --models-dir "/mnt/models" --backend diffusers --api-log --log sdnext.log &
+bash webui.sh --api --listen --port 7860 --debug --use-cuda --models-dir "/mnt/models" \
+  --ckpt "/mnt/models/Stable-diffusion/photon_v1.safetensors" \
+  --config "/mnt/models/Stable-diffusion/photon_v1.yaml" \
+  --api-log \
+  --reset \
+  --log sdnext.log &
 WEBUI_PID=$!
 
 # 2) wait for the /sdapi/v1/txt2img endpoint
