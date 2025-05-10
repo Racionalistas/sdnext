@@ -118,8 +118,7 @@ RUN python3 -m venv venv \
 # ТЕПЕРЬ, когда все пакеты Python установлены,
 # запускаем launch.py для предварительной проверки и настройки
 # ──────────────────────────────────────────────────────────────────────────
-RUN . venv/bin/activate && \
-    python /app/launch.py --debug --uv --use-cuda --log sdnext.log --test --optional
+RUN python /app/launch.py --debug --uv --use-cuda --log sdnext.log --test --optional
 
 # Предварительная загрузка моделей MediaPipe, чтобы избежать их загрузок в рантайме
 RUN . venv/bin/activate && \
