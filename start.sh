@@ -38,37 +38,14 @@ fi
 
 # 3) ждём, пока заработает /txt2img
 echo "==== Waiting for /sdapi/v1/txt2img endpoint ===="
-ready=false
 for i in {1..30}; do
-  if curl -sf -o /dev/null http://127.0.0.1:7860/sdapi/v1/txt2img; then
-    echo "→ /txt2img is ready (after $i checks)."
-    ready=true
+  if curl -s -o /dev/null http://127.0.0.1:7860/sdapi/v1/txt2img; then
+    echo "→ /txt2img is reachable (after $i checks)."
     break
   fi
   printf "→ still waiting for txt2img… (%d/30)\r" "$i"
   sleep 2
 done
-if [ "$ready" != true ]; then
-  echo "ERROR: /txt2img endpoint did not respond in time."
-  tail -n50 sdnext.log || true
-  exit 1
-fi
-
-# 4) ждём ControlNet (если нужен)
-echo "==== Waiting for ControlNet /controlnet/detect ===="
-ready=false
-for i in {1..30}; do
-  if curl -sf -o /dev/null http://127.0.0.1:7860/controlnet/detect; then
-    echo "→ ControlNet is ready (after $i checks)."
-    ready=true
-    break
-  fi
-  printf "→ still waiting for ControlNet… (%d/30)\r" "$i"
-  sleep 2
-done
-if [ "$ready" != true ]; then
-  echo "WARNING: ControlNet did not become available in time, continuing anyway."
-fi
 
 # 5) стартуем наш handler
 echo "==== Starting function_handler.py ===="
