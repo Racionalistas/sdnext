@@ -11,7 +11,6 @@ source venv/bin/activate
 echo "==== Starting SD.Next WebUI (API only) ===="
 bash webui.sh --api --listen --port 7860 --debug --use-cuda --models-dir "/mnt/models" \
   --ckpt "/mnt/models/Stable-diffusion/photon_v1.safetensors" \
-  --config "/mnt/models/Stable-diffusion/photon_v1.yaml" \
   --api-log \
   --log sdnext.log &
 WEBUI_PID=$!
@@ -19,11 +18,11 @@ WEBUI_PID=$!
 # 2) wait for the /sdapi/v1/txt2img endpoint
 echo "==== Waiting for WebUI API to become available ===="
 for i in {1..60}; do
-  if curl -s http://127.0.0.1:7860/sdapi/v1/txt2img > /dev/null; then
+  status=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:7860/sdapi/v1/models)
+  if [ "$status" -eq 200 ]; then
     echo "→ WebUI API is ready (after $i checks)."
     break
   fi
-  printf "→ still waiting… (%d/60)\r" "$i"
   sleep 2
 done
 curl -s http://127.0.0.1:7860/controlnet/detect 2>/dev/null || echo "API endpoint not available"
