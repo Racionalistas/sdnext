@@ -2,45 +2,86 @@
 # ----------------------------------------------------------------------
 # start.sh (at /app/start.sh)
 # ----------------------------------------------------------------------
-set -e
+set -euo pipefail
+IFS=$'\n\t'
 
 # Активация виртуальной среды
 source venv/bin/activate
 
-# 1) start SD.Next WebUI in API‑only mode (no UI)
+# 1) стартуем SD.Next WebUI в API‑only режиме
 echo "==== Starting SD.Next WebUI (API only) ===="
-bash webui.sh --api --listen --port 7860 --debug --use-cuda --models-dir "/mnt/models" \
+bash webui.sh \
+  --api --listen --port 7860 --debug --use-cuda --models-dir "/mnt/models" \
   --ckpt "/mnt/models/Stable-diffusion/photon_v1.safetensors" \
-  --api-log \
-  --log sdnext.log &
+  --api-log --log sdnext.log &
 WEBUI_PID=$!
 
-# 2) wait for the /sdapi/v1/txt2img endpoint
-echo "==== Waiting for WebUI API and models to become available ===="
+# 2) ждём, пока поднимутся модели
+echo "==== Waiting for /sdapi/v1/sd-models to return non-empty array ===="
+ready=false
 for i in {1..60}; do
-  # -f: fail on HTTP>=400, т.е. curl вернёт exit≠0 пока endpoint не вернёт 200
+  # если нет jq, можно заменить на grep -qE '\[[^]]+\]'
   if curl -sf http://127.0.0.1:7860/sdapi/v1/sd-models \
        | jq 'length > 0' --exit-status; then
-    echo "...ready"
+    echo "→ Models are loaded (after $i checks)."
+    ready=true
     break
   fi
-  printf "→ still waiting… (%d/60)\r" "$i"
+  printf "→ still waiting for models… (%d/60)\r" "$i"
   sleep 2
 done
-curl -s http://127.0.0.1:7860/controlnet/detect 2>/dev/null || echo "API endpoint not available"
-# 3) launch your RunPod / FastAPI handler
+if [ "$ready" != true ]; then
+  echo "ERROR: sd-models did not load in time."
+  tail -n50 sdnext.log || true
+  exit 1
+fi
+
+# 3) ждём, пока заработает /txt2img
+echo "==== Waiting for /sdapi/v1/txt2img endpoint ===="
+ready=false
+for i in {1..30}; do
+  if curl -sf -o /dev/null http://127.0.0.1:7860/sdapi/v1/txt2img; then
+    echo "→ /txt2img is ready (after $i checks)."
+    ready=true
+    break
+  fi
+  printf "→ still waiting for txt2img… (%d/30)\r" "$i"
+  sleep 2
+done
+if [ "$ready" != true ]; then
+  echo "ERROR: /txt2img endpoint did not respond in time."
+  tail -n50 sdnext.log || true
+  exit 1
+fi
+
+# 4) ждём ControlNet (если нужен)
+echo "==== Waiting for ControlNet /controlnet/detect ===="
+ready=false
+for i in {1..30}; do
+  if curl -sf -o /dev/null http://127.0.0.1:7860/controlnet/detect; then
+    echo "→ ControlNet is ready (after $i checks)."
+    ready=true
+    break
+  fi
+  printf "→ still waiting for ControlNet… (%d/30)\r" "$i"
+  sleep 2
+done
+if [ "$ready" != true ]; then
+  echo "WARNING: ControlNet did not become available in time, continuing anyway."
+fi
+
+# 5) стартуем наш handler
 echo "==== Starting function_handler.py ===="
-# Запускаем с активированной виртуальной средой
 python function_handler.py &
 HANDLER_PID=$!
 
-# 4) clean up both processes on exit
+# 6) ловим SIGTERM/SIGINT, чтобы корректно убить оба процесса
 cleanup() {
   echo "==== Stopping processes ===="
-  kill "$HANDLER_PID" "$WEBUI_PID" 2>/dev/null || true
-  exit 0
+  kill -TERM "$HANDLER_PID" "$WEBUI_PID" 2>/dev/null || true
+  wait
 }
 trap cleanup SIGINT SIGTERM EXIT
 
-# 5) wait on your handler (so container stays alive)
+# 7) держим контейнер живым
 wait "$HANDLER_PID"
