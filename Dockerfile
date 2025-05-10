@@ -59,20 +59,20 @@ RUN mkdir -p /mnt/models/Diffusers \
 # ----------------------------------------------------------------------
 RUN mkdir -p extensions && \
     git clone https://github.com/Mikubill/sd-webui-controlnet.git extensions/sd-webui-controlnet && \
-    pip install -r extensions/sd-webui-controlnet/requirements.txt
+    pip install -r /mnt/extensions/sd-webui-controlnet/requirements.txt
 
 # Download ControlNet models
-RUN mkdir -p extensions/sd-webui-controlnet/models && \
+RUN mkdir -p /mnt/extensions/sd-webui-controlnet/models && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth \
-    -o extensions/sd-webui-controlnet/models/control_v11p_sd15_canny.pth && \
+    -o /mnt/extensions/sd-webui-controlnet/models/control_v11p_sd15_canny.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth \
-    -o extensions/sd-webui-controlnet/models/control_v11p_sd15_openpose.pth && \
+    -o /mnt/extensions/sd-webui-controlnet/models/control_v11p_sd15_openpose.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_softedge.pth \
-    -o extensions/sd-webui-controlnet/models/control_v11p_sd15_softedge.pth && \
+    -o /mnt/extensions/sd-webui-controlnet/models/control_v11p_sd15_softedge.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth \
-    -o extensions/sd-webui-controlnet/models/control_v11f1p_sd15_depth.pth && \
+    -o /mnt/extensions/sd-webui-controlnet/models/control_v11f1p_sd15_depth.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_pose.pth \
-    -o extensions/sd-webui-controlnet/models/control_v11p_sd15_pose.pth
+    -o /mnt/extensions/sd-webui-controlnet/models/control_v11p_sd15_pose.pth
 # ──────────────────────────────────────────────────────────────────────────
 # СНАЧАЛА настраиваем venv и ставим ВСЕ Python пакеты
 # ──────────────────────────────────────────────────────────────────────────

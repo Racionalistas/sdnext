@@ -570,7 +570,7 @@ def process_request(job: dict):
                 
             # Добавляем цветокоррекцию для бледной кожи
             if "sampler_name" not in params:
-                params["sampler_name"] = "DPM++ 2M Karras"  # Лучший семплер для деталей
+                params["sampler_name"] = "Euler a"
             
             # Увеличиваем CFG Scale для лучшего следования промпту
             if "cfg_scale" not in params:
