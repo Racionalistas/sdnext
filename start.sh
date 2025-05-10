@@ -47,6 +47,9 @@ for i in {1..30}; do
   sleep 2
 done
 
+echo "Проверка доступных API эндпоинтов..."
+curl -s http://127.0.0.1:7860/docs | grep -o '/sdapi/v1/[^"]*' || true
+
 # 5) стартуем наш handler
 echo "==== Starting function_handler.py ===="
 python function_handler.py &
