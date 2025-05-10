@@ -13,7 +13,6 @@ bash webui.sh --api --listen --port 7860 --debug --use-cuda --models-dir "/mnt/m
   --ckpt "/mnt/models/Stable-diffusion/photon_v1.safetensors" \
   --config "/mnt/models/Stable-diffusion/photon_v1.yaml" \
   --api-log \
-  --reset \
   --log sdnext.log &
 WEBUI_PID=$!
 
