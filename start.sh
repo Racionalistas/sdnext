@@ -13,7 +13,7 @@ echo "==== Starting SD.Next WebUI (API only) ===="
 bash webui.sh \
   --api --listen --port 7860 --debug --use-cuda --models-dir "/mnt/models" \
   --ckpt "/mnt/models/Stable-diffusion/photon_v1.safetensors" \
-  --api-log --log sdnext.log &
+  --api-log --log sdnext.log --quick --skip-all &
 WEBUI_PID=$!
 
 # 2) ждём, пока поднимутся модели
