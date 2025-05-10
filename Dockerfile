@@ -47,9 +47,8 @@ ENV LD_PRELOAD=libtcmalloc_minimal.so.4
 # ──────────────────────────────────────────────────────────────────────────
 RUN mkdir -p /mnt/models/Stable-diffusion && \
     wget -q -O /mnt/models/Stable-diffusion/photon_v1.safetensors \
-    https://civitai.com/api/download/models/90072?type=Model&format=SafeTensor&size=pruned&fp=fp16
-
-RUN wget -q -O /mnt/models/Stable-diffusion/photon_v1.yaml \
+    https://civitai.com/api/download/models/90072?type=Model&format=SafeTensor&size=pruned&fp=fp16 && \
+    wget -q -O /mnt/models/Stable-diffusion/photon_v1.yaml \
     https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5/resolve/main/v1-inference.yaml
 # ──────────────────────────────────────────────────────────────────────────
 # СНАЧАЛА настраиваем venv и ставим ВСЕ Python пакеты
