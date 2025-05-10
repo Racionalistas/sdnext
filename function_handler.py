@@ -549,7 +549,7 @@ def process_request(job: dict):
 
             # негативные подсказки
             negative_prompts_list += [
-                "extra fingers", "more than five fingers", "mutated hands",
+                "extra fingers", "more than five fingers", "mutated hands", "cartoon", "painting", "illustration", "(worst quality, low quality, normal quality:2)",
                 "deformed hands", "long fingers", "weird fingers", "fused legs", "merged thighs", "bad crotch anatomy"
             ]
             
