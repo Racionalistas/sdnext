@@ -115,7 +115,7 @@ RUN python3 -m venv venv \
     gguf \
     av \
     git+https://github.com/facebookresearch/segment-anything.git \
-    xformers==0.0.22 triton \
+    triton \
     greenlet sqlalchemy PyMatting pooch rembg \
     fvcore svglib addict yapf matplotlib controlnet_aux[sam,segment-anything] annotator \
     && pip install --no-cache-dir pydantic==1.10.21
