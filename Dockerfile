@@ -110,12 +110,6 @@ RUN sed -i \
     -e 's/sd_ldm\.model\.first_stage_model/sd_ldm.vae/g' \
     /mnt/extensions/controlnet/scripts/controlnet.py
 
-# ставим зависимости аннотаторов ControlNet
-RUN . /app/venv/bin/activate \
-    && pip install --no-cache-dir \
-    -r /mnt/extensions/controlnet/requirements.txt \
-    controlnet_aux[sam,segment-anything]
-
 # СНАЧАЛА настраиваем venv и ставим ВСЕ Python пакеты
 # ──────────────────────────────────────────────────────────────────────────
 
@@ -158,6 +152,13 @@ RUN python3 -m venv venv \
     greenlet sqlalchemy PyMatting pooch rembg \
     fvcore svglib addict yapf matplotlib controlnet_aux[sam,segment-anything] annotator \
     && pip install --no-cache-dir pydantic==1.10.21
+
+
+# ставим зависимости аннотаторов ControlNet
+RUN . /app/venv/bin/activate \
+    && pip install --no-cache-dir \
+    -r /mnt/extensions/controlnet/requirements.txt \
+    controlnet_aux[sam,segment-anything]
 
 # ──────────────────────────────────────────────────────────────────────────
 # ТЕПЕРЬ, когда все пакеты Python установлены,
