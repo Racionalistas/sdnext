@@ -92,6 +92,10 @@ RUN mkdir -p /mnt/extensions/controlnet/annotator/downloads/sam && \
     -o /mnt/extensions/controlnet/annotator/downloads/openpose/facenet.pth
 
 RUN mkdir -p /mnt/models/ControlNet/annotator/downloads && \
+    mkdir -p /mnt/models/ControlNet/annotator/downloads/sam && \
+    mkdir -p /mnt/models/ControlNet/annotator/downloads/midas && \
+    mkdir -p /mnt/models/ControlNet/annotator/downloads/openpose && \
+    mkdir -p /mnt/models/ControlNet/annotator/downloads/facenet && \
     curl -L https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth \
     -o /mnt/models/ControlNet/annotator/downloads/sam/sam_vit_b_01ec64.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet/resolve/main/annotator/ckpts/dpt_hybrid-midas-501f0c75.pt \
