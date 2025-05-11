@@ -430,32 +430,6 @@ def process_request(job: dict):
                         "control_mode": "Balanced"
                     })
                     
-            # Добавляем ControlNet для мягких краёв для лучшего соединения шеи
-            softedge_response = requests.post(
-                "http://127.0.0.1:7860/controlnet/detect",
-                json={
-                    "controlnet_module": "softedge",
-                    "controlnet_input_images": [input_image]
-                }
-            )
-            if softedge_response.ok:
-                softedge_result = softedge_response.json()
-                if "images" in softedge_result:
-                    controlnet_units.append({
-                        "input_image": softedge_result["images"][0],
-                        "module": "softedge",
-                        "model": "control_v11p_sd15_softedge",
-                        "weight": 0.3,  # Уменьшаем вес для лучшего баланса
-                        "resize_mode": "Resize and Fill",
-                        "lowvram": False,
-                        "processor_res": 512,
-                        "threshold_a": 64,
-                        "threshold_b": 64,
-                        "guidance_start": 0.0,
-                        "guidance_end": 1.0,
-                        "control_mode": "Balanced"
-                    })
-                    
             # Добавляем ControlNet для позы для контроля анатомии
             pose_response = requests.post(
                 "http://127.0.0.1:7860/controlnet/detect",

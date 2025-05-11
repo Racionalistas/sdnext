@@ -53,10 +53,6 @@ RUN mkdir -p /mnt/models/Diffusers \
     https://huggingface.co/sam749/Photon-v1 \
     /mnt/models/Diffusers/Photon-v1
 
-# # Segment‑Anything (ViT‑B)
-# RUN curl -L https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth \
-#         -o /mnt/sam_vit_b_01ec64.pth
-
 # ----------------------------------------------------------------------
 #  INSTALL CONTROLNET
 # ----------------------------------------------------------------------
@@ -69,17 +65,14 @@ RUN mkdir -p /mnt/extensions/controlnet/models && \
     -o /mnt/extensions/controlnet/models/control_v11p_sd15_canny.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth \
     -o /mnt/extensions/controlnet/models/control_v11p_sd15_openpose.pth && \
-    curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_softedge.pth \
-    -o /mnt/extensions/controlnet/models/control_v11p_sd15_softedge.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth \
-    -o /mnt/extensions/controlnet/models/control_v11f1p_sd15_depth.pth && \
-    curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_pose.pth \
-    -o /mnt/extensions/controlnet/models/control_v11p_sd15_pose.pth
+    -o /mnt/extensions/controlnet/models/control_v11f1p_sd15_depth.pth
 
 # Download ControlNet Annotator Models
 RUN mkdir -p /mnt/extensions/controlnet/annotator/downloads/sam && \
     mkdir -p /mnt/extensions/controlnet/annotator/downloads/midas && \
     mkdir -p /mnt/extensions/controlnet/annotator/downloads/openpose && \
+    mkdir -p /mnt/extensions/controlnet/annotator/downloads/facenet && \
     curl -L https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth \
     -o /mnt/extensions/controlnet/annotator/downloads/sam/sam_vit_b_01ec64.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet/resolve/main/annotator/ckpts/dpt_hybrid-midas-501f0c75.pt \
@@ -91,33 +84,13 @@ RUN mkdir -p /mnt/extensions/controlnet/annotator/downloads/sam && \
     curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/facenet.pth \
     -o /mnt/extensions/controlnet/annotator/downloads/openpose/facenet.pth
 
-RUN mkdir -p /mnt/models/ControlNet/annotator/downloads && \
-    mkdir -p /mnt/models/ControlNet/annotator/downloads/sam && \
-    mkdir -p /mnt/models/ControlNet/annotator/downloads/midas && \
-    mkdir -p /mnt/models/ControlNet/annotator/downloads/openpose && \
-    mkdir -p /mnt/models/ControlNet/annotator/downloads/facenet && \
-    curl -L https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth \
-    -o /mnt/models/ControlNet/annotator/downloads/sam/sam_vit_b_01ec64.pth && \
-    curl -L https://huggingface.co/lllyasviel/ControlNet/resolve/main/annotator/ckpts/dpt_hybrid-midas-501f0c75.pt \
-    -o /mnt/models/ControlNet/annotator/downloads/midas/dpt_hybrid-midas-501f0c75.pt && \
-    curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/body_pose_model.pth \
-    -o /mnt/models/ControlNet/annotator/downloads/openpose/body_pose_model.pth && \
-    curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/hand_pose_model.pth \
-    -o /mnt/models/ControlNet/annotator/downloads/openpose/hand_pose_model.pth && \
-    curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/facenet.pth \
-    -o /mnt/models/ControlNet/annotator/downloads/openpose/facenet.pth
-
-RUN mkdir -p /mnt/models/ControlNet && \
+RUN mkdir -p /mnt/models/control && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth \
-    -o /mnt/models/ControlNet/control_v11p_sd15_canny.pth && \
+    -o /mnt/models/control/control_v11p_sd15_canny.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth \
-    -o /mnt/models/ControlNet/control_v11p_sd15_openpose.pth && \
-    curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_softedge.pth \
-    -o /mnt/models/ControlNet/control_v11p_sd15_softedge.pth && \
+    -o /mnt/models/control/control_v11p_sd15_openpose.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth \
-    -o /mnt/models/ControlNet/control_v11f1p_sd15_depth.pth && \
-    curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_pose.pth \
-    -o /mnt/models/ControlNet/control_v11p_sd15_pose.pth
+    -o /mnt/models/control/control_v11f1p_sd15_depth.pth
 
 # сразу патчим main-контролнет
 RUN sed -i \
