@@ -65,6 +65,8 @@ RUN mkdir -p /mnt/extensions/controlnet/models && \
     -o /mnt/extensions/controlnet/models/control_v11p_sd15_canny.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth \
     -o /mnt/extensions/controlnet/models/control_v11p_sd15_openpose.pth && \
+    curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_softedge.pth \
+    -o /mnt/extensions/controlnet/models/control_v11p_sd15_softedge.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth \
     -o /mnt/extensions/controlnet/models/control_v11f1p_sd15_depth.pth
 
@@ -89,6 +91,8 @@ RUN mkdir -p /mnt/models/control && \
     -o /mnt/models/control/control_v11p_sd15_canny.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth \
     -o /mnt/models/control/control_v11p_sd15_openpose.pth && \
+    curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_softedge.pth \
+    -o /mnt/models/control/control_v11p_sd15_softedge.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth \
     -o /mnt/models/control/control_v11f1p_sd15_depth.pth
 
