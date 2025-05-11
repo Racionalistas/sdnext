@@ -54,6 +54,10 @@ RUN mkdir -p /mnt/models/Diffusers \
     https://huggingface.co/sam749/Photon-v1 \
     /mnt/models/Diffusers/Photon-v1
 
+# # Segment‑Anything (ViT‑B)
+# RUN curl -L https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth \
+#         -o /app/sam_vit_b_01ec64.pth
+
 # ----------------------------------------------------------------------
 #  INSTALL CONTROLNET
 # ----------------------------------------------------------------------
@@ -110,8 +114,10 @@ RUN python3 -m venv venv \
     albumentations==1.4.3 \
     gguf \
     av \
+    git+https://github.com/facebookresearch/segment-anything.git \
+    xformers==0.0.22 triton \
     greenlet sqlalchemy PyMatting pooch rembg \
-    fvcore svglib addict yapf matplotlib controlnet_aux[sam] \
+    fvcore svglib addict yapf matplotlib controlnet_aux[sam,segment-anything] annotator \
     && pip install --no-cache-dir pydantic==1.10.21
 
 # ──────────────────────────────────────────────────────────────────────────
