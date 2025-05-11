@@ -11,7 +11,7 @@ source venv/bin/activate
 # 1) стартуем SD.Next WebUI в API‑only режиме
 echo "==== Starting SD.Next WebUI (API only) ===="
 bash webui.sh \
-  --api --listen --port 7860 --debug --use-cuda --models-dir /mnt/models \
+  --api --listen --port 7860 --debug --use-cuda --models-dir /mnt/models --skip-requirements --skip-git --skip-torch --disable-queue  \
   --ckpt /mnt/models/Stable-diffusion/photon_v1.safetensors --disable-console-progressbars --disable-safe-unpickle \
   --api-log --log sdnext.log --quick --extensions-dir /mnt/extensions &
 WEBUI_PID=$!
@@ -50,7 +50,7 @@ done
 echo "Проверка доступных API эндпоинтов..."
 curl -s http://127.0.0.1:7860/docs | grep -o '/sdapi/v1/[^"]*' || true
 
-sleep 2
+sleep 1
 
 # 5) стартуем наш handler
 echo "==== Starting function_handler.py ===="
