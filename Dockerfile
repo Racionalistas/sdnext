@@ -163,6 +163,11 @@ RUN . venv/bin/activate && \
     python /tmp/init_mediapipe.py && \
     rm /tmp/init_mediapipe.py
 
+RUN sed -i \
+    -e 's/sd_ldm\.model\.diffusion_model/sd_ldm.unet/g' \
+    -e 's/sd_ldm\.model\.first_stage_model/sd_ldm.vae/g' \
+    /mnt/extensions/controlnet/scripts/controlnet.py
+
 # copy your custom handler and the new entrypoint script
 COPY function_handler.py /app/function_handler.py
 COPY start.sh           /app/start.sh
