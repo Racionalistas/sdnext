@@ -91,6 +91,18 @@ RUN mkdir -p /mnt/extensions/controlnet/annotator/downloads/sam && \
     curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/facenet.pth \
     -o /mnt/extensions/controlnet/annotator/downloads/openpose/facenet.pth
 
+RUN mkdir -p /mnt/models/ControlNet/annotator/downloads && \
+    curl -L https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth \
+    -o /mnt/models/ControlNet/annotator/downloads/sam/sam_vit_b_01ec64.pth && \
+    curl -L https://huggingface.co/lllyasviel/ControlNet/resolve/main/annotator/ckpts/dpt_hybrid-midas-501f0c75.pt \
+    -o /mnt/models/ControlNet/annotator/downloads/midas/dpt_hybrid-midas-501f0c75.pt && \
+    curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/body_pose_model.pth \
+    -o /mnt/models/ControlNet/annotator/downloads/openpose/body_pose_model.pth && \
+    curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/hand_pose_model.pth \
+    -o /mnt/models/ControlNet/annotator/downloads/openpose/hand_pose_model.pth && \
+    curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/facenet.pth \
+    -o /mnt/models/ControlNet/annotator/downloads/openpose/facenet.pth
+
 RUN mkdir -p /mnt/models/ControlNet && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth \
     -o /mnt/models/ControlNet/control_v11p_sd15_canny.pth && \

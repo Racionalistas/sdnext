@@ -50,6 +50,8 @@ done
 echo "Проверка доступных API эндпоинтов..."
 curl -s http://127.0.0.1:7860/docs | grep -o '/sdapi/v1/[^"]*' || true
 
+sleep 2
+
 # 5) стартуем наш handler
 echo "==== Starting function_handler.py ===="
 python function_handler.py &
