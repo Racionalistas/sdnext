@@ -150,7 +150,7 @@ RUN python3 -m venv venv \
     greenlet sqlalchemy PyMatting pooch rembg \
     fvcore svglib addict yapf matplotlib controlnet_aux[sam,segment-anything] annotator \
     && pip install --no-cache-dir pydantic==1.10.21 \
-    && pip install --no-cache-dir -e /mnt/extensions/controlnet
+    && pip install --no-cache-dir -e /mnt/extensions/controlnet 
 
 # ставим зависимости аннотаторов ControlNet
 RUN . /app/venv/bin/activate \
