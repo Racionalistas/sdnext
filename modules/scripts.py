@@ -445,9 +445,6 @@ class ScriptRunner:
             for script in self.alwayson_scripts:
                 if not script.standalone:
                     continue
-                if (self.name == 'control') and (script.name not in control_extensions) and (script.title() not in control_extensions):
-                    errors.log.debug(f'Script: fn="{script.filename}" type={self.name} skip')
-                    continue
                 t0 = time.time()
                 with gr.Group(elem_id=f'{parent}_script_{script.title().lower().replace(" ", "_")}', elem_classes=['group-extension']) as group:
                     create_script_ui(script, inputs, inputs_alwayson)
@@ -459,9 +456,6 @@ class ScriptRunner:
                 for script in self.alwayson_scripts:
                     if script.standalone:
                         continue
-                    if (self.name == 'control') and (paths.extensions_dir in script.filename) and (script.title() not in control_extensions):
-                        errors.log.debug(f'Script: fn="{script.filename}" type={self.name} skip')
-                        continue
                     t0 = time.time()
                     with gr.Group(elem_id=f'{parent}_script_{script.title().lower().replace(" ", "_")}', elem_classes=['group-extension']) as group:
                         create_script_ui(script, inputs, inputs_alwayson)
@@ -469,9 +463,6 @@ class ScriptRunner:
                     time_setup[script.title()] = time_setup.get(script.title(), 0) + (time.time()-t0)
 
         for script in self.selectable_scripts:
-            if (self.name == 'control') and (paths.extensions_dir in script.filename) and (script.title() not in control_extensions):
-                errors.log.debug(f'Script: fn="{script.filename}" type={self.name} skip')
-                continue
             with gr.Group(elem_id=f'{parent}_script_{script.title().lower().replace(" ", "_")}', elem_classes=['group-scripts'], visible=False) as group:
                 t0 = time.time()
                 create_script_ui(script, inputs, inputs_alwayson)
