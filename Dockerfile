@@ -11,7 +11,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     git wget curl libgl1-mesa-glx libglib2.0-0 jq \
     python3-venv python3-dev build-essential cmake ninja-build \
-    google-perftools ffmpeg && \
+    google-perftools ffmpeg g++ cmake && \
     rm -rf /var/lib/apt/lists/*
 
 # clone SD.Next (включая папку configs/)
@@ -58,9 +58,7 @@ RUN mkdir -p /mnt/models/Diffusers \
 #  INSTALL CONTROLNET
 # ----------------------------------------------------------------------
 RUN mkdir -p /mnt/extensions && \
-    git clone https://github.com/Mikubill/sd-webui-controlnet.git /mnt/extensions/controlnet && \
-    pip install -r /mnt/extensions/controlnet/requirements.txt && \
-    pip install -U controlnet_aux
+    git clone https://github.com/Mikubill/sd-webui-controlnet.git /mnt/extensions/controlnet
 
 # Download ControlNet models
 RUN mkdir -p /mnt/extensions/controlnet/models && \
@@ -85,7 +83,7 @@ RUN python3 -m venv venv \
     && pip install --no-cache-dir -r requirements.txt \
     && pip install --no-cache-dir \
     runpod \
-    opencv-python-headless \
+    opencv-python \
     mediapipe \
     numpy \
     pillow \
@@ -113,6 +111,7 @@ RUN python3 -m venv venv \
     gguf \
     av \
     greenlet sqlalchemy PyMatting pooch rembg \
+    fvcore svglib addict yapf matplotlib controlnet_aux[sam] \
     && pip install --no-cache-dir pydantic==1.10.21
 
 # ──────────────────────────────────────────────────────────────────────────
