@@ -558,14 +558,10 @@ def process_request(job: dict):
             # Оптимальный denoising strength для баланса между анатомией и цветом
             if "denoising_strength" not in params:
                 params["denoising_strength"] = 0.2  # Уменьшаем для лучшего сохранения исходного цвета
-            else:
-                params["denoising_strength"] = min(params.get("denoising_strength", 0.2), 0.2)
 
             # Обеспечиваем достаточное количество шагов для качественного результата
             if "steps" not in params:
                 params["steps"] = 20  # Увеличиваем количество шагов
-            else:
-                params["steps"] = max(params["steps"], 20)
                 
             # Добавляем цветокоррекцию для бледной кожи
             if "sampler_name" not in params:
