@@ -92,7 +92,18 @@ RUN mkdir -p /mnt/extensions/controlnet/annotator/downloads/sam && \
     curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/facenet.pth \
     -o /mnt/extensions/controlnet/annotator/downloads/openpose/facenet.pth
 
-# ──────────────────────────────────────────────────────────────────────────
+RUN mkdir -p /mnt/models/ControlNet && \
+    curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth \
+    -o /mnt/models/ControlNet/control_v11p_sd15_canny.pth && \
+    curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth \
+    -o /mnt/models/ControlNet/control_v11p_sd15_openpose.pth && \
+    curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_softedge.pth \
+    -o /mnt/models/ControlNet/control_v11p_sd15_softedge.pth && \
+    curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth \
+    -o /mnt/models/ControlNet/control_v11f1p_sd15_depth.pth && \
+    curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_pose.pth \
+    -o /mnt/models/ControlNet/control_v11p_sd15_pose.pth
+
 # СНАЧАЛА настраиваем venv и ставим ВСЕ Python пакеты
 # ──────────────────────────────────────────────────────────────────────────
 
