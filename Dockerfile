@@ -59,7 +59,8 @@ RUN mkdir -p /mnt/models/Diffusers \
 # ----------------------------------------------------------------------
 RUN mkdir -p /mnt/extensions && \
     git clone https://github.com/Mikubill/sd-webui-controlnet.git /mnt/extensions/controlnet && \
-    pip install -r /mnt/extensions/controlnet/requirements.txt
+    pip install -r /mnt/extensions/controlnet/requirements.txt && \
+    pip install -U controlnet_aux
 
 # Download ControlNet models
 RUN mkdir -p /mnt/extensions/controlnet/models && \
