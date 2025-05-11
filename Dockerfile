@@ -36,6 +36,7 @@ ENV SD_NOHASHING=true
 ENV SD_DATADIR="/mnt/data"
 ENV SD_MODELSDIR="/mnt/models"
 ENV SD_DOCKER=true
+ENV PYTHONPATH="/mnt/extensions/controlnet:${PYTHONPATH}"
 
 # tcmalloc is not required but it is highly recommended
 ENV LD_PRELOAD=libtcmalloc_minimal.so.4
@@ -150,13 +151,8 @@ RUN python3 -m venv venv \
     greenlet sqlalchemy PyMatting pooch rembg \
     fvcore svglib addict yapf matplotlib controlnet_aux[sam,segment-anything] annotator \
     && pip install --no-cache-dir pydantic==1.10.21 \
-    && pip install --no-cache-dir -e /mnt/extensions/controlnet 
-
-# ставим зависимости аннотаторов ControlNet
-RUN . /app/venv/bin/activate \
-    && pip install --no-cache-dir \
-    -r /mnt/extensions/controlnet/requirements.txt \
-    controlnet_aux[sam,segment-anything]
+    && pip install --no-cache-dir -r /mnt/extensions/controlnet/requirements.txt \
+    && pip install --no-cache-dir controlnet_aux[sam,segment-anything]
 
 # ──────────────────────────────────────────────────────────────────────────
 # ТЕПЕРЬ, когда все пакеты Python установлены,
