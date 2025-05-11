@@ -15,10 +15,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # clone SD.Next (включая папку configs/)
-RUN git clone https://github.com/vladmandic/sdnext.git .
-
-# инициализация submodules
-RUN git submodule update --init --recursive
+RUN git clone https://github.com/vladmandic/sdnext.git . \
+    && git submodule update --init --recursive
 
 # Переменные для пропуска проверок и установки при запуске
 # ENV SD_SKIP_REQUIREMENTS=true
@@ -151,8 +149,8 @@ RUN python3 -m venv venv \
     triton \
     greenlet sqlalchemy PyMatting pooch rembg \
     fvcore svglib addict yapf matplotlib controlnet_aux[sam,segment-anything] annotator \
-    && pip install --no-cache-dir pydantic==1.10.21
-
+    && pip install --no-cache-dir pydantic==1.10.21 \
+    && pip install --no-cache-dir -e /mnt/extensions/controlnet
 
 # ставим зависимости аннотаторов ControlNet
 RUN . /app/venv/bin/activate \
@@ -175,6 +173,11 @@ RUN . venv/bin/activate && \
     > /tmp/init_mediapipe.py && \
     python /tmp/init_mediapipe.py && \
     rm /tmp/init_mediapipe.py
+
+RUN sed -i \
+    -e 's/sd_ldm\.model\.diffusion_model/sd_ldm.unet/g' \
+    -e 's/sd_ldm\.model\.first_stage_model/sd_ldm.vae/g' \
+    /mnt/extensions/controlnet/scripts/controlnet.py
 
 # copy your custom handler and the new entrypoint script
 COPY function_handler.py /app/function_handler.py
