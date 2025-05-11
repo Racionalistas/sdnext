@@ -117,7 +117,7 @@ RUN python3 -m venv venv \
     realesrgan \
     open_clip_torch \
     clip \
-    xformers==0.0.26.post1 \
+    xformers \
     nncf==2.16.0 \
     optimum-quanto==0.2.7 \
     torchao==0.10.0 \
