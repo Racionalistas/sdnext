@@ -521,7 +521,6 @@ def process_request(job: dict):
                 "img2img_fix_steps": True,
                 "img2img_color_correction": True,  # Включаем коррекцию цвета
                 "img2img_background_color": "white",
-                "inpaint_only_masked": True,
             })
 
             # Добавляем промпт для сохранения анатомии и цвета кожи

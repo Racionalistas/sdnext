@@ -56,7 +56,7 @@ RUN mkdir -p /mnt/models/Diffusers \
 
 # # Segment‑Anything (ViT‑B)
 # RUN curl -L https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth \
-#         -o /app/sam_vit_b_01ec64.pth
+#         -o /mnt/sam_vit_b_01ec64.pth
 
 # ----------------------------------------------------------------------
 #  INSTALL CONTROLNET
@@ -76,6 +76,22 @@ RUN mkdir -p /mnt/extensions/controlnet/models && \
     -o /mnt/extensions/controlnet/models/control_v11f1p_sd15_depth.pth && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_pose.pth \
     -o /mnt/extensions/controlnet/models/control_v11p_sd15_pose.pth
+
+# Download ControlNet Annotator Models
+RUN mkdir -p /mnt/extensions/controlnet/annotator/downloads/sam && \
+    mkdir -p /mnt/extensions/controlnet/annotator/downloads/midas && \
+    mkdir -p /mnt/extensions/controlnet/annotator/downloads/openpose && \
+    curl -L https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth \
+    -o /mnt/extensions/controlnet/annotator/downloads/sam/sam_vit_b_01ec64.pth && \
+    curl -L https://huggingface.co/lllyasviel/ControlNet/resolve/main/annotator/ckpts/dpt_hybrid-midas-501f0c75.pt \
+    -o /mnt/extensions/controlnet/annotator/downloads/midas/dpt_hybrid-midas-501f0c75.pt && \
+    curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/body_pose_model.pth \
+    -o /mnt/extensions/controlnet/annotator/downloads/openpose/body_pose_model.pth && \
+    curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/hand_pose_model.pth \
+    -o /mnt/extensions/controlnet/annotator/downloads/openpose/hand_pose_model.pth && \
+    curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/facenet.pth \
+    -o /mnt/extensions/controlnet/annotator/downloads/openpose/facenet.pth
+
 # ──────────────────────────────────────────────────────────────────────────
 # СНАЧАЛА настраиваем venv и ставим ВСЕ Python пакеты
 # ──────────────────────────────────────────────────────────────────────────
@@ -101,7 +117,7 @@ RUN python3 -m venv venv \
     realesrgan \
     open_clip_torch \
     clip \
-    xformers \
+    xformers==0.0.26.post1 \
     nncf==2.16.0 \
     optimum-quanto==0.2.7 \
     torchao==0.10.0 \
