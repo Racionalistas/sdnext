@@ -104,6 +104,18 @@ RUN mkdir -p /mnt/models/ControlNet && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_pose.pth \
     -o /mnt/models/ControlNet/control_v11p_sd15_pose.pth
 
+# сразу патчим main-контролнет
+RUN sed -i \
+    -e 's/sd_ldm\.model\.diffusion_model/sd_ldm.unet/g' \
+    -e 's/sd_ldm\.model\.first_stage_model/sd_ldm.vae/g' \
+    /mnt/extensions/controlnet/scripts/controlnet.py
+
+# ставим зависимости аннотаторов ControlNet
+RUN . /app/venv/bin/activate \
+    && pip install --no-cache-dir \
+    -r /mnt/extensions/controlnet/requirements.txt \
+    controlnet_aux[sam,segment-anything]
+
 # СНАЧАЛА настраиваем venv и ставим ВСЕ Python пакеты
 # ──────────────────────────────────────────────────────────────────────────
 
@@ -162,11 +174,6 @@ RUN . venv/bin/activate && \
     > /tmp/init_mediapipe.py && \
     python /tmp/init_mediapipe.py && \
     rm /tmp/init_mediapipe.py
-
-RUN sed -i \
-    -e 's/sd_ldm\.model\.diffusion_model/sd_ldm.unet/g' \
-    -e 's/sd_ldm\.model\.first_stage_model/sd_ldm.vae/g' \
-    /mnt/extensions/controlnet/scripts/controlnet.py
 
 # copy your custom handler and the new entrypoint script
 COPY function_handler.py /app/function_handler.py
