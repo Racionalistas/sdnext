@@ -526,7 +526,7 @@ def process_request(job: dict):
             # Добавляем промпт для сохранения анатомии и цвета кожи
             base_positive_prompt_additions = ["perfect anatomy", "accurate body proportions", "natural pose"]
             skin_specific_positive_prompts = [
-                "preserve original skin tone and texture", "detailed skin texture", "seamless neck connection",
+                "preserve original skin tone and texture", "detailed skin texture",
                 "anatomically correct" # anatomically correct лучше здесь, чем в общем
             ]
 
@@ -542,7 +542,7 @@ def process_request(job: dict):
             negative_prompts_list = [
                 "deformed anatomy", "bad anatomy", "wrong proportions", "unnatural pose", 
                 "wrong skin color", "unnatural skin tone", "changed skin tone", "skin tone mismatch with original",
-                "neck seam", "discontinuous neck", "weird clothing", "incomplete clothing",
+                "discontinuous neck",
                 "distorted body", "malformed limbs", "extra limbs"
             ]
 
