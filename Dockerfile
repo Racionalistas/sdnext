@@ -84,7 +84,9 @@ RUN mkdir -p /mnt/extensions/controlnet/annotator/downloads/sam && \
     curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/hand_pose_model.pth \
     -o /mnt/extensions/controlnet/annotator/downloads/openpose/hand_pose_model.pth && \
     curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/facenet.pth \
-    -o /mnt/extensions/controlnet/annotator/downloads/openpose/facenet.pth
+    -o /mnt/extensions/controlnet/annotator/downloads/openpose/facenet.pth && \
+    curl -L https://huggingface.co/lllyasviel/Annotators/resolve/main/ControlNetHED.pth \
+    -o /mnt/extensions/controlnet/annotator/downloads/hed/ControlNetHED.pth
 
 RUN mkdir -p /mnt/models/control && \
     curl -L https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth \
